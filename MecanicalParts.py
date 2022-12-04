@@ -1,54 +1,92 @@
 import pygame
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-WHITE = (255, 255, 255)
-COLORS = [WHITE, BLACK, GREEN, BLUE, RED]
-class Rectangle():
-    def __init__(self, left, top, size, rectcolor, figures):
-        self.left = left
-        self.top = top
-        self.size = size
-        self.color = rectcolor
-        self.figures = figures
-    def draw(self):
-        pygame.draw.rect(screen, self.color, (self.left, self.top, self.size, self.size))
-
-    def change_color(self):
-        self.color = COLORS[(COLORS.index(self.color) + 1) % len(COLORS)]
 
 
-    def click(self, x, y):
-        if x <= self.size + self.left and x >= self.left and y <= self.size + self.top and y >= self.top:
+class Button():
+    def __init__(self, sf, img, width, height, x, y):
+        self.sf = sf
+        self.img = img
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
 
-            self.draw()
-
-    def checkforclick (self, x, y, figures):
+    def draw(self, ):
+        image = pygame.image.load(self.img)
+        self.sf.blit(image, (self.x, self.y))
         pygame.display.flip()
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.x, self.y = event.pos
-                for rect in figures:
-                    rect.click(x, y)
 
-running = True
-rectcolor = RED
+    def run(self):
+        a = self.x + self.width
+        b = self.y + self.height
+        ev = pygame.event.get()
+        for event in ev:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if pygame.mouse.get_pos() >= (self.x, self.y):
+                    print('click')
+
+    def resize(self, widthIn, heightIn):
+        image = pygame.transform.scale(self.sf, (widthIn, heightIn))
+
+    def move(self, newx, newy):
+        self.x = newx
+        self.y = newy
+
+
+def update():
+    pygame.display.flip()
+
+
 pygame.init()
-size = widht, height = (800, 600)
-cellsize = 20
-left = 150
-top = 200
-screen = pygame.display.set_mode(size)
-screen.fill((255, 255, 255))
-btn = []
+screen = pygame.display.set_mode((500, 500))
+color = (255, 0, 0)
+while True:
+    button = Button(screen, "apple.jpg", 250, 250, 20, 20)
+    button.draw()
+    button.run()
 
-for x in range(widht // cellsize):
-    for y in range(height // cellsize):
-        btn.append(Rectangle(x * cellsize, y * cellsize, cellsize, BLUE,btn))
-while running:
-    for rect in btn:
-        rect.draw()
-        rect.checkforclick()
+import pygame
 
-pygame.quit()
+
+class Button():
+    def __init__(self, sf, img, width, height, x, y):
+        self.sf = sf
+        self.img = img
+        self.width = width
+        self.height = height
+        self.x = x
+        self.y = y
+
+    def draw(self, ):
+        image = pygame.image.load(self.img)
+        self.sf.blit(image, (self.x, self.y))
+        pygame.display.flip()
+
+    def run(self):
+        a = self.x + self.width
+        b = self.y + self.height
+        ev = pygame.event.get()
+        for event in ev:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if pygame.mouse.get_pos() >= (self.x, self.y) and pygame.mouse.get_pos() >= (a, b):
+                    print('click')
+
+    def resize(self, widthIn, heightIn):
+        image = pygame.transform.scale(self.sf, (widthIn, heightIn))
+
+    def move(self, newx, newy):
+        self.x = newx
+        self.y = newy
+
+
+def update():
+    pygame.display.flip()
+
+
+pygame.init()
+screen = pygame.display.set_mode((500, 500))
+color = (255, 0, 0)
+while True:
+    button = Button(screen, "apple.jpg", 250, 250, 20, 20)
+    button.draw()
+    button.run()
+
